@@ -32,11 +32,10 @@ public class ProductService {
         return productRepository.findAll(pageable);
     }
     
-    public List<Product> getAllProduct(String username) {
+    public Page<Product> getAllProduct(Pageable pageable, String username) {
         User user = userService.getUserByUsername(username);
-        List<Product> products = productRepository.findByUser(user);
 
-        return products;
+        return productRepository.findByUser(pageable, user);
     }
 
     public Product saveProduct(Product product, String username) {

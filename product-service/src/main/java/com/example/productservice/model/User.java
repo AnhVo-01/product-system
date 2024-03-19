@@ -5,6 +5,9 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,6 +18,8 @@ import java.util.Set;
                 @UniqueConstraint(columnNames = "email")
         })
 @Data
+@SQLDelete(sql = "UPDATE user SET deleted = true WHERE id=?")
+@SQLRestriction("deleted=false")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,15 +50,13 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
-    @Column(length = 1)
-    private int status;
+    private boolean deleted = Boolean.FALSE;
 
     public User() {}
 
-    public User(String username, String email, String password, int status) {
+    public User(String username, String email, String password) {
         this.username = username;
         this.email = email;
         this.password = password;
-        this.status = status;
     }
 }

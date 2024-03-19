@@ -21,7 +21,7 @@ public class ApiExceptionHandler {
 	
 	@ExceptionHandler(ResourceNotFoundException.class)
 	public final ResponseEntity<ExceptionResponse> handleNotFoundException(ResourceNotFoundException ex, WebRequest req) {
-		String path = ((ServletWebRequest)req).getRequest().getRequestURI().toString();
+		String path = ((ServletWebRequest)req).getRequest().getRequestURI();
 		ExceptionResponse exceptionResponse = new ExceptionResponse(
 				new Date(), ex.getMessage(), path, HttpStatus.NOT_FOUND.value());
 		
@@ -31,7 +31,7 @@ public class ApiExceptionHandler {
 	
 	@ExceptionHandler(HttpMessageNotReadableException.class)
 	public final ResponseEntity<ExceptionResponse> handleBadRequestException(HttpMessageNotReadableException ex, WebRequest req) {
-		String path = ((ServletWebRequest)req).getRequest().getRequestURI().toString();
+		String path = ((ServletWebRequest)req).getRequest().getRequestURI();
 		ExceptionResponse exceptionResponse = new ExceptionResponse(
 				new Date(), "Invalid request", path, HttpStatus.BAD_REQUEST.value());
 	    return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
@@ -39,9 +39,9 @@ public class ApiExceptionHandler {
 	
 	@ExceptionHandler(BadCredentialsException.class)
 	public final ResponseEntity<ExceptionResponse> handleInvalidCredentialsException(BadCredentialsException ex, WebRequest req) {
-		String path = ((ServletWebRequest)req).getRequest().getRequestURI().toString();
+		String path = ((ServletWebRequest)req).getRequest().getRequestURI();
 		ExceptionResponse exceptionResponse = new ExceptionResponse(
-				new Date(), "Invalid credentials", path, HttpStatus.BAD_REQUEST.value());
+				new Date(), "Username or password invalid", path, HttpStatus.BAD_REQUEST.value());
 	    return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
 	}
 }
